@@ -83,8 +83,6 @@ cd mern-backend-template
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
 ### Configure environment variables
@@ -115,15 +113,6 @@ npm lint        # Run ESLint checks
 ## Contributing
 
 Contributions are welcome! Feel free to fork this repo, open issues, and submit PRs.
-
----
-
-## Why use this template?
-
-✅ Saves hours of project setup time
-✅ Follows best practices (MVC, modular, clean code)
-✅ Pre-built authentication & user management
-✅ Easily extendable for any MERN project
 
 ---
 
