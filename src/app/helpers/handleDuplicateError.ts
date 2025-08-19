@@ -7,7 +7,7 @@ import { TGenericErrorResponse } from "../interfaces/error.types";
 // Example: trying to register a user with an email that already exists.
 // Extracts the duplicate field value from the error message if possible.
 
-export const handlerDuplicateError = (err: any): TGenericErrorResponse => {
+export const handleDuplicateError = (err: any): TGenericErrorResponse => {
   // Try to extract the duplicate value from error message using regex
   const matchedArray = err.message.match(/"([^"]*)"/);
 

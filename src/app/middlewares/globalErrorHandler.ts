@@ -3,10 +3,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import AppError from "../errorHelpers/AppError";
-import { handlerDuplicateError } from "../helpers/handleDuplicateError";
+import { handleDuplicateError } from "../helpers/handleDuplicateError";
 import { handleCastError } from "../helpers/handleCastError";
-import { handlerZodError } from "../helpers/handlerZodError";
-import { handlerValidationError } from "../helpers/handlerValidationError";
+import { handleZodError } from "../helpers/handleZodError";
+import { handleValidationError } from "../helpers/handleValidationError";
 import { TErrorSources } from "../interfaces/error.types";
 import { envVariables } from "../config/env";
 
@@ -26,7 +26,7 @@ export const globalErrorHandler = async (
 
   //Duplicate error
   if (err.code === 11000) {
-    const simplifiedError = handlerDuplicateError(err);
+    const simplifiedError = handleDuplicateError(err);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
   }
@@ -40,7 +40,7 @@ export const globalErrorHandler = async (
 
   // Zod error
   else if (err.name === "ZodError") {
-    const simplifiedError = handlerZodError(err);
+    const simplifiedError = handleZodError(err);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorSources = simplifiedError.errorSources as TErrorSources[];
@@ -48,7 +48,7 @@ export const globalErrorHandler = async (
 
   //Mongoose Validation Error
   else if (err.name === "ValidationError") {
-    const simplifiedError = handlerValidationError(err);
+    const simplifiedError = handleValidationError(err);
     statusCode = simplifiedError.statusCode;
     errorSources = simplifiedError.errorSources as TErrorSources[];
     message = simplifiedError.message;
