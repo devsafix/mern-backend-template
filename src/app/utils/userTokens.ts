@@ -6,12 +6,16 @@ import { User } from "../modules/user/user.model";
 import { generateToken, verifyToken } from "./jwt";
 import httpStatus from "http-status-codes";
 
+/**
+ * Generate access + refresh tokens for a user
+ */
 export const createUserTokens = (user: Partial<IUser>) => {
   const jwtPayload = {
     userId: user._id,
     email: user.email,
     role: user.role,
   };
+
   const accessToken = generateToken(
     jwtPayload,
     envVariables.JWT_ACCESS_SECRET,
@@ -24,12 +28,12 @@ export const createUserTokens = (user: Partial<IUser>) => {
     envVariables.JWT_REFRESH_EXPIRES
   );
 
-  return {
-    accessToken,
-    refreshToken,
-  };
+  return { accessToken, refreshToken };
 };
 
+/**
+ * Create a new access token using refresh token
+ */
 export const createNewAccessTokenWithRefreshToken = async (
   refreshToken: string
 ) => {
@@ -38,8 +42,8 @@ export const createNewAccessTokenWithRefreshToken = async (
     envVariables.JWT_REFRESH_SECRET
   ) as JwtPayload;
 
+  // Ensure user still exists
   const isUserExist = await User.findOne({ email: verifiedRefreshToken.email });
-
   if (!isUserExist) {
     throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
   }

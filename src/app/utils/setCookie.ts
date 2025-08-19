@@ -5,12 +5,15 @@ export interface AuthTokens {
   refreshToken?: string;
 }
 
+/**
+ * Set auth cookies (HttpOnly + Secure)
+ */
 export const setAuthCookie = (res: Response, tokenInfo: AuthTokens) => {
   if (tokenInfo.accessToken) {
     res.cookie("accessToken", tokenInfo.accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      httpOnly: true, // JS cannot access → prevents XSS
+      secure: true, // only over HTTPS
+      sameSite: "none", // cross-site cookie allowed (e.g. frontend + backend on different domains)
     });
   }
 

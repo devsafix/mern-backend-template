@@ -15,12 +15,15 @@ interface IResponse<T> {
   meta?: IMeta;
 }
 
+/**
+ * Send a consistent API response
+ */
 export const sendResponse = <T>(res: Response, data: IResponse<T>) => {
   res.status(data.statusCode).json({
     statusCode: data.statusCode,
     success: data.success,
     message: data.message,
-    meta: data.meta,
+    meta: data.meta || undefined, // include only if present
     data: data.data,
   });
 };
