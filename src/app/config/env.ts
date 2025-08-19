@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+// ---------------------- EnvConfig Interface ---------------------- //
+// Defines the structure of all required environment variables.
+// This ensures type safety and prevents runtime errors due to missing configs.
 interface EnvConfig {
   PORT: string;
   NODE_ENV: "development" | "production";
@@ -26,6 +29,9 @@ interface EnvConfig {
   REDIS_PASSWORD: string;
 }
 
+// ---------------------- Load & Validate Env Variables ---------------------- //
+// This function checks if all required environment variables are present.
+// If any are missing, the server throws an error and prevents startup.
 const loadEnvVariables = (): EnvConfig => {
   const requiredVars = [
     "PORT",
@@ -50,12 +56,14 @@ const loadEnvVariables = (): EnvConfig => {
     "REDIS_PASSWORD",
   ];
 
+  // Validate presence of each required variable
   for (const key of requiredVars) {
     if (!process.env[key]) {
       throw new Error(`Missing required env variable: ${key}`);
     }
   }
 
+  // Return strongly typed env variables for use across the project
   return {
     PORT: process.env.PORT as string,
     NODE_ENV: process.env.NODE_ENV as "development" | "production",
@@ -82,4 +90,5 @@ const loadEnvVariables = (): EnvConfig => {
   };
 };
 
+// Export validated environment variables for use throughout the app.
 export const envVariables = loadEnvVariables();
