@@ -8,11 +8,14 @@ import { connectRedis } from "./app/config/redis.config";
 
 let server: Server;
 
+// ---------------------- Server Initialization ---------------------- //
 async function startServer() {
   try {
+    // Connect to MongoDB
     await mongoose.connect(envVariables.DATABASE_URL);
     console.log(`✅ Connected to MongoDB`);
 
+    // Start Express server
     server = app.listen(envVariables.PORT, () => {
       console.log(`✅ Server is running on port ${envVariables.PORT}`);
     });
@@ -21,11 +24,17 @@ async function startServer() {
   }
 }
 
+// ---------------------- Bootstrap ---------------------- //
+// IIFE (Immediately Invoked Function Expression) to run startup tasks.
 (async () => {
-  await connectRedis();
-  await startServer();
-  await seedSuperAdmin();
+  await connectRedis(); // Initialize Redis connection
+  await startServer(); // Start MongoDB + Express server
+  await seedSuperAdmin(); // Ensure default admin user exists
 })();
+
+// ---------------------- Process Handlers ---------------------- //
+// Graceful shutdown for unexpected errors or system signals.
+// These handlers prevent corrupted states and ensure resources are closed properly.
 
 process.on("unhandledRejection", (err) => {
   console.log("Unhandled Rejection Detected. Server Shutting Down ...", err);
