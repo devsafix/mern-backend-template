@@ -21,7 +21,7 @@ export const checkAuth = async (
 ) => {
   try {
     // Extract token from Authorization header or cookies
-    const token = req.headers.authorization || req.headers.cookie;
+    const token = req.headers.authorization || req.cookies.accessToken;
 
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized: No token");
