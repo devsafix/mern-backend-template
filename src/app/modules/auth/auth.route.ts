@@ -12,6 +12,7 @@ router.post(
   AuthControllers.register
 );
 router.post("/login", AuthControllers.login);
+router.post("/logout", AuthControllers.logout);
 router.post("/forgot-password", AuthControllers.forgotPassword);
 router.post("/reset-password", checkAuth, AuthControllers.resetPassword);
 router.post("/refresh-token", AuthControllers.getNewAccessToken);
